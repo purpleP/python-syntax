@@ -217,7 +217,7 @@ syn region FunctionParameters start='(' end=')' display contains=
             \ pythonNone,
             \ pythonBuiltinFunc,
             \ pythonBoolean nextgroup=pythonRaiseFromStatement display contained
-syn match OptionalParameters /\i*\ze=/ display contained
+syn match OptionalParameters /\i*\ze=\(=\)\@!/ display contained
 "
 " Decorators (new in Python 2.4)
 "
