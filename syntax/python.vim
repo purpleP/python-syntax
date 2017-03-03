@@ -153,7 +153,7 @@ endif
 syn keyword pythonInstanceVariable self
 syn keyword pythonClassVaraible cls
 syn keyword pythonStatement     break continue del
-syn keyword pythonStatement     exec return
+syn keyword pythonStatement     return
 syn keyword pythonStatement     pass yield
 syn keyword pythonStatement     raise nextgroup=pythonIdentifier,pythonExClass skipwhite
 syn keyword pythonStatement     global assert
