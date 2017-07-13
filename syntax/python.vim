@@ -1,142 +1,6 @@
-" Vim syntax file
-" Language:             Python
-" Current Maintainer:   Dmitry Vasiliev <dima at hlabs dot org>
-" Previous Maintainer:  Neil Schemenauer <nas at python dot ca>
-" URL:                  https://github.com/hdima/python-syntax
-" Last Change:          2015-11-01
-" Filenames:            *.py
-" Version:              3.6.0
-"
-" Based on python.vim (from Vim 6.1 distribution)
-" by Neil Schemenauer <nas at python dot ca>
-"
-" Please use the following channels for reporting bugs, offering suggestions or
-" feedback:
-
-" - python.vim issue tracker: https://github.com/hdima/python-syntax/issues
-" - Email: Dmitry Vasiliev (dima at hlabs.org)
-" - Send a message or follow me for updates on Twitter: `@hdima
-"   <https://twitter.com/hdima>`__
-"
-" Contributors
-" ============
-"
-" List of the contributors in alphabetical order:
-"
-"   Andrea Riciputi
-"   Anton Butanaev
-"   Antony Lee
-"   Caleb Adamantine
-"   David Briscoe
-"   Elizabeth Myers
-"   Ihor Gorobets
-"   Jeroen Ruigrok van der Werven
-"   John Eikenberry
-"   Joongi Kim
-"   Marc Weber
-"   Pedro Algarvio
-"   Victor Salgado
-"   Will Gray
-"   Yuri Habrusiev
-"
-" Options
-" =======
-"
-"    :let OPTION_NAME = 1                   Enable option
-"    :let OPTION_NAME = 0                   Disable option
-"
-"
-" Option to select Python version
-" -------------------------------
-"
-"    python_version_2                       Enable highlighting for Python 2
-"                                           (Python 3 highlighting is enabled
-"                                           by default). Can also be set as
-"                                           a buffer (b:python_version_2)
-"                                           variable.
-"
-"    You can also use the following local to buffer commands to switch
-"    between two highlighting modes:
-"
-"    :Python3Syntax                         Switch to Python 3 highlighting
-"                                           mode
-"
-" Option names used by the script
-" -------------------------------
-"
-"    python_highlight_builtins              Highlight builtin functions and
-"                                           objects
-"      python_highlight_builtin_objs        Highlight builtin objects only
-"      python_highlight_builtin_funcs       Highlight builtin functions only
-"    python_highlight_exceptions            Highlight standard exceptions
-"    python_highlight_string_formatting     Highlight % string formatting
-"    python_highlight_string_format         Highlight str.format syntax
-"    python_highlight_string_templates      Highlight string.Template syntax
-"    python_highlight_indent_errors         Highlight indentation errors
-"    python_highlight_space_errors          Highlight trailing spaces
-"    python_highlight_doctests              Highlight doc-tests
-"    python_print_as_function               Highlight 'print' statement as
-"                                           function for Python 2
-"    python_highlight_file_headers_as_comments
-"                                           Highlight shebang and coding
-"                                           headers as comments
-"
-"    python_highlight_all                   Enable all the options above
-"                                           NOTE: This option don't override
-"                                           any previously set options
-"
-"    python_slow_sync                       Can be set to 0 for slow machines
-"
-
-" For version 5.x: Clear all syntax items
-" For versions greater than 6.x: Quit when a syntax file was already loaded
-if version < 600
-    syntax clear
-elseif exists("b:current_syntax")
+if exists("b:current_syntax")
     finish
 endif
-
-"
-" Commands
-"
-
-" Enable option if it's not defined
-function! s:EnableByDefault(name)
-    if !exists(a:name)
-        let {a:name} = 1
-    endif
-endfunction
-
-" Check if option is enabled
-function! s:Enabled(name)
-    return exists(a:name) && {a:name}
-endfunction
-
-"
-" Default options
-"
-
-call s:EnableByDefault("g:python_slow_sync")
-
-if s:Enabled("g:python_highlight_all")
-    call s:EnableByDefault("g:python_highlight_builtins")
-    if s:Enabled("g:python_highlight_builtins")
-        call s:EnableByDefault("g:python_highlight_builtin_objs")
-        call s:EnableByDefault("g:python_highlight_builtin_funcs")
-    endif
-    call s:EnableByDefault("g:python_highlight_exceptions")
-    call s:EnableByDefault("g:python_highlight_string_formatting")
-    call s:EnableByDefault("g:python_highlight_string_format")
-    call s:EnableByDefault("g:python_highlight_string_templates")
-    call s:EnableByDefault("g:python_highlight_indent_errors")
-    call s:EnableByDefault("g:python_highlight_space_errors")
-    call s:EnableByDefault("g:python_highlight_doctests")
-    call s:EnableByDefault("g:python_print_as_function")
-endif
-
-"
-" Keywords
-"
 
 syn keyword pythonInstanceVariable self
 syn keyword pythonClassVaraible cls
@@ -203,36 +67,17 @@ syn match   pythonDecorator	"@" display nextgroup=pythonDottedName skipwhite
 syn match   pythonDottedName "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\%(\.\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\)*" display contained nextgroup=FunctionParameters
 syn match   pythonDot        "\." display containedin=pythonDottedName
 
-"
-" Comments
-"
-
 syn match   pythonComment	"#.*$" display contains=pythonTodo,@Spell
-if !s:Enabled("g:python_highlight_file_headers_as_comments")
-    syn match   pythonRun		"\%^#!.*$"
-    syn match   pythonCoding	"\%^.*\%(\n.*\)\?#.*coding[:=]\s*[0-9A-Za-z-_.]\+.*$"
-endif
+syn match   pythonRun		"\%^#!.*$"
+syn match   pythonCoding	"\%^.*\%(\n.*\)\?#.*coding[:=]\s*[0-9A-Za-z-_.]\+.*$"
 syn keyword pythonTodo		TODO FIXME XXX contained
-
-"
-" Errors
-"
 
 syn match pythonError		"\<\d\+\D\+\>" display
 syn match pythonError		"[$?]" display
 syn match pythonError		"[&|]\{2,}" display
 syn match pythonError		"[=]\{3,}" display
-
-" Mixing spaces and tabs also may be used for pretty formatting multiline
-" statements
-if s:Enabled("g:python_highlight_indent_errors")
-    syn match pythonIndentError	"^\s*\%( \t\|\t \)\s*\S"me=e-1 display
-endif
-
-" Trailing space errors
-if s:Enabled("g:python_highlight_space_errors")
-    syn match pythonSpaceError	"\s\+$" display
-endif
+syn match pythonIndentError	"^\s*\%( \t\|\t \)\s*\S"me=e-1 display
+syn match pythonSpaceError	"\s\+$" display
 
 "
 " Strings
@@ -282,15 +127,8 @@ syn match pythonRawEscape +\\['"]+ display transparent contained
 
 
 
-if s:Enabled("g:python_highlight_doctests")
-    " DocTests
-    syn region pythonDocTest	start="^\s*>>>" end=+'''+he=s-1 end="^\s*$" contained
-    syn region pythonDocTest2	start="^\s*>>>" end=+"""+he=s-1 end="^\s*$" contained
-endif
-
-"
-" Numbers (ints, longs, floats, complex)
-"
+syn region pythonDocTest	start="^\s*>>>" end=+'''+he=s-1 end="^\s*$" contained
+syn region pythonDocTest2	start="^\s*>>>" end=+"""+he=s-1 end="^\s*$" contained
 
 syn match   pythonHexError	"\<0[xX]\x*[g-zG-Z]\x*\>" display
 syn match   pythonOctError	"\<0[oO]\=\o*\D\+\d*\>" display
@@ -313,28 +151,21 @@ syn match   pythonFloat		"\.\d\+\%([eE][+-]\=\d\+\)\=[jJ]\=\>" display
 syn match   pythonFloat		"\<\d\+[eE][+-]\=\d\+[jJ]\=\>" display
 syn match   pythonFloat		"\<\d\+\.\d*\%([eE][+-]\=\d\+\)\=[jJ]\=" display
 
-"
-" Builtin objects and types
-"
-
-if s:Enabled("g:python_highlight_builtin_objs")
-    syn keyword pythonNone        None
-    syn keyword pythonBoolean		True False
-    syn keyword pythonBuiltinObj	Ellipsis NotImplemented
-    syn match pythonBuiltinObj	'\v(\.)@<!<(object|bool|int|float|tuple|str|list|dict|set|frozenset|bytearray|bytes)>' nextgroup=FunctionParameters
-    syn keyword pythonBuiltinObj	__debug__ __doc__ __file__ __name__ __package__
-    syn keyword pythonBuiltinObj	__loader__ __spec__ __path__ __cached__
-endif
+syn keyword pythonNone        None
+syn keyword pythonBoolean		True False
+syn keyword pythonBuiltinObj	Ellipsis NotImplemented
+syn match pythonBuiltinObj	'\v(\.)@<!<(object|bool|int|float|tuple|str|list|dict|set|frozenset|bytearray|bytes)>' nextgroup=FunctionParameters
+syn keyword pythonBuiltinObj	__debug__ __doc__ __file__ __name__ __package__
+syn keyword pythonBuiltinObj	__loader__ __spec__ __path__ __cached__
 
 "
 " Builtin functions
 "
 
-if s:Enabled("g:python_highlight_builtin_funcs")
-    syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(ascii|exec|memoryview|print)>\ze\(' nextgroup=FunctionParameters
-    syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(__import__|abs|all|any)>\ze\(' nextgroup=FunctionParameters
-    syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(bin|chr|classmethod|cmp|compile|complex)>\ze\(' nextgroup=FunctionParameters
-    syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(delattr|dir|divmod|enumerate|eval)>\ze\(' nextgroup=FunctionParameters
+syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(ascii|exec|memoryview|print)>\ze\(' nextgroup=FunctionParameters
+syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(__import__|abs|all|any)>\ze\(' nextgroup=FunctionParameters
+syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(bin|chr|classmethod|cmp|compile|complex)>\ze\(' nextgroup=FunctionParameters
+syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(delattr|dir|divmod|enumerate|eval)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(filter|format|getattr)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(globals|hasattr|hash|hex|id)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(input|isinstance)>\ze\(' nextgroup=FunctionParameters
@@ -344,125 +175,105 @@ syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(pow|property|range)>\ze\(' nextgroup=
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(repr|reversed|round|setattr)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(slice|sorted|staticmethod|sum|super)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(type|vars|zip)>\ze\(' nextgroup=FunctionParameters
-endif
 
-"
-" Builtin exceptions and warnings
-"
+syn match pythonExClass   '\v(\.)@<!\zs<(BlockingIOError|ChildProcessError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(ConnectionError|BrokenPipeError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(ConnectionAbortedError|ConnectionRefusedError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(ConnectionResetError|FileExistsError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(FileNotFoundError|InterruptedError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(IsADirectoryError|NotADirectoryError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(PermissionError|ProcessLookupError TimeoutError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(StopAsyncIteration|ResourceWarning)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!<(BaseException|Exception|ArithmeticError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(LookupError|EnvironmentError|AssertionError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(AttributeError|BufferError|EOFError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(FloatingPointError|GeneratorExit|IOError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(ImportError|IndexError|KeyError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(KeyboardInterrupt|MemoryError|NameError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(NotImplementedError|OSError|OverflowError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(ReferenceError|RuntimeError|StopIteration)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(SyntaxError|IndentationError|TabError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(SystemError|SystemExit|TypeError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(UnboundLocalError|UnicodeError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(UnicodeEncodeError|UnicodeDecodeError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(UnicodeTranslateError|ValueError|VMSError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(WindowsError|ZeroDivisionError)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(Warning|UserWarning|BytesWarning|DeprecationWarning)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(PendingDepricationWarning|SyntaxWarning)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(RuntimeWarning|FutureWarning)>' nextgroup=FunctionParameters
+syn match pythonExClass   '\v(\.)@<!\zs<(ImportWarning|UnicodeWarning)>' nextgroup=FunctionParameters
 
-if s:Enabled("g:python_highlight_exceptions")
-    syn match pythonExClass   '\v(\.)@<!\zs<(BlockingIOError|ChildProcessError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(ConnectionError|BrokenPipeError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(ConnectionAbortedError|ConnectionRefusedError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(ConnectionResetError|FileExistsError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(FileNotFoundError|InterruptedError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(IsADirectoryError|NotADirectoryError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(PermissionError|ProcessLookupError TimeoutError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(StopAsyncIteration|ResourceWarning)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!<(BaseException|Exception|ArithmeticError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(LookupError|EnvironmentError|AssertionError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(AttributeError|BufferError|EOFError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(FloatingPointError|GeneratorExit|IOError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(ImportError|IndexError|KeyError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(KeyboardInterrupt|MemoryError|NameError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(NotImplementedError|OSError|OverflowError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(ReferenceError|RuntimeError|StopIteration)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(SyntaxError|IndentationError|TabError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(SystemError|SystemExit|TypeError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(UnboundLocalError|UnicodeError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(UnicodeEncodeError|UnicodeDecodeError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(UnicodeTranslateError|ValueError|VMSError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(WindowsError|ZeroDivisionError)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(Warning|UserWarning|BytesWarning|DeprecationWarning)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(PendingDepricationWarning|SyntaxWarning)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(RuntimeWarning|FutureWarning)>' nextgroup=FunctionParameters
-    syn match pythonExClass   '\v(\.)@<!\zs<(ImportWarning|UnicodeWarning)>' nextgroup=FunctionParameters
-endif
+" This is fast but code inside triple quoted strings screws it up. It
+" is impossible to fix because the only way to know if you are inside a
+" triple quoted string is to start from the beginning of the file.
+syn sync match pythonSync grouphere NONE "):$"
+syn sync maxlines=200
 
-if s:Enabled("g:python_slow_sync")
-    syn sync minlines=2000
-else
-    " This is fast but code inside triple quoted strings screws it up. It
-    " is impossible to fix because the only way to know if you are inside a
-    " triple quoted string is to start from the beginning of the file.
-    syn sync match pythonSync grouphere NONE "):$"
-    syn sync maxlines=200
-endif
+command -nargs=+ HiLink hi def link <args>
 
-if version >= 508 || !exists("did_python_syn_inits")
-    if version <= 508
-        let did_python_syn_inits = 1
-        command -nargs=+ HiLink hi link <args>
-    else
-        command -nargs=+ HiLink hi def link <args>
-    endif
+HiLink pythonStatement        Statement
+HiLink pythonRaiseFromStatement   Statement
+HiLink pythonImport           Include
+HiLink pythonFunction         Function
+HiLink pythonConditional      Conditional
+HiLink pythonRepeat           Repeat
+HiLink pythonException        Exception
+HiLink pythonOperator         Operator
 
-    HiLink pythonStatement        Statement
-    HiLink pythonRaiseFromStatement   Statement
-    HiLink pythonImport           Include
-    HiLink pythonFunction         Function
-    HiLink pythonConditional      Conditional
-    HiLink pythonRepeat           Repeat
-    HiLink pythonException        Exception
-    HiLink pythonOperator         Operator
+HiLink pythonDecorator        Define
+HiLink pythonDottedName       Function
+HiLink pythonDot              Normal
 
-    HiLink pythonDecorator        Define
-    HiLink pythonDottedName       Function
-    HiLink pythonDot              Normal
+HiLink pythonComment          Comment
+HiLink pythonCoding           Special
+HiLink pythonRun              Special
+HiLink pythonTodo             Todo
 
-    HiLink pythonComment          Comment
-    if !s:Enabled("g:python_highlight_file_headers_as_comments")
-        HiLink pythonCoding           Special
-        HiLink pythonRun              Special
-    endif
-    HiLink pythonTodo             Todo
+HiLink pythonError            Error
+HiLink pythonIndentError      Error
+HiLink pythonSpaceError       Error
 
-    HiLink pythonError            Error
-    HiLink pythonIndentError      Error
-    HiLink pythonSpaceError       Error
+HiLink pythonString           String
+HiLink pythonRawString        String
 
-    HiLink pythonString           String
-    HiLink pythonRawString        String
+HiLink pythonUniEscape        Special
+HiLink pythonUniEscapeError   Error
 
-    HiLink pythonUniEscape        Special
-    HiLink pythonUniEscapeError   Error
+HiLink pythonBytes              String
+HiLink pythonRawBytes           String
+HiLink pythonBytesContent       String
+HiLink pythonBytesError         Error
+HiLink pythonBytesEscape        Special
+HiLink pythonBytesEscapeError   Error
 
-    HiLink pythonBytes              String
-    HiLink pythonRawBytes           String
-    HiLink pythonBytesContent       String
-    HiLink pythonBytesError         Error
-    HiLink pythonBytesEscape        Special
-    HiLink pythonBytesEscapeError   Error
+HiLink pythonStrFormatting    Special
+HiLink pythonStrFormat        Special
+HiLink pythonStrTemplate      Special
 
-    HiLink pythonStrFormatting    Special
-    HiLink pythonStrFormat        Special
-    HiLink pythonStrTemplate      Special
+HiLink pythonDocTest          Special
+HiLink pythonDocTest2         Special
 
-    HiLink pythonDocTest          Special
-    HiLink pythonDocTest2         Special
+HiLink pythonNumber           Number
+HiLink pythonHexNumber        Number
+HiLink pythonOctNumber        Number
+HiLink pythonBinNumber        Number
+HiLink pythonFloat            Float
+HiLink pythonNumberError      Error
+HiLink pythonOctError         Error
+HiLink pythonHexError         Error
+HiLink pythonBinError         Error
 
-    HiLink pythonNumber           Number
-    HiLink pythonHexNumber        Number
-    HiLink pythonOctNumber        Number
-    HiLink pythonBinNumber        Number
-    HiLink pythonFloat            Float
-    HiLink pythonNumberError      Error
-    HiLink pythonOctError         Error
-    HiLink pythonHexError         Error
-    HiLink pythonBinError         Error
+HiLink pythonBoolean          Boolean
+HiLink pythonNone             Constant
 
-    HiLink pythonBoolean          Boolean
-    HiLink pythonNone             Constant
+HiLink pythonBuiltinObj       Structure
+HiLink pythonBuiltinFunc      Function
 
-    HiLink pythonBuiltinObj       Structure
-    HiLink pythonBuiltinFunc      Function
+HiLink pythonExClass          Structure
+HiLink pythonInstanceVariable htmlTagN
+HiLink pythonClassVaraible htmlTagN
+HiLink OptionalParameters htmlTagN
 
-    HiLink pythonExClass          Structure
-    HiLink pythonInstanceVariable htmlTagN
-    HiLink pythonClassVaraible htmlTagN
-    HiLink OptionalParameters htmlTagN
-
-    delcommand HiLink
-endif
+delcommand HiLink
 
 let b:current_syntax = "python"
