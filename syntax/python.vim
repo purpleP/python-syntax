@@ -166,7 +166,7 @@ syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(ascii|exec|memoryview|print)>\ze\(' n
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(__import__|abs|all|any)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(bin|chr|classmethod|cmp|compile|complex)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(delattr|dir|divmod|enumerate|eval)>\ze\(' nextgroup=FunctionParameters
-syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(filter|format|getattr)>\ze\(' nextgroup=FunctionParameters
+syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(filter|format|getattr|callable)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(globals|hasattr|hash|hex|id)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(input|isinstance)>\ze\(' nextgroup=FunctionParameters
 syn match pythonBuiltinFunc	'\v(\.)@<!\zs<(issubclass|iter|len|locals|map|max)>\ze\(' nextgroup=FunctionParameters
