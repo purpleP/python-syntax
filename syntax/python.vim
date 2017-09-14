@@ -30,8 +30,6 @@ syn match   pythonFunction    "[a-zA-Z_][a-zA-Z0-9_]*" nextgroup=FunctionParamet
 syn match   pythonStatement   "\<async\s\+def\>" nextgroup=pythonFunction skipwhite
 syn match   pythonStatement   "\<async\s\+with\>"
 syn match   pythonStatement   "\<async\s\+for\>"
-syn match pythonStarArguments "*" nextgroup=pythonIdentifier contained
-syn keyword pythonStarArguments "**" nextgroup=pythonIdentifier contained
 
 syn region FunctionParameters start='(' end=')' display contains=
             \ FunctionParameters,
@@ -59,7 +57,6 @@ syn region FunctionParameters start='(' end=')' display contains=
             \ pythonBuiltinObj,
             \ pythonNone,
             \ pythonBuiltinFunc,
-            \ pythonStarArguments,
             \ pythonBoolean nextgroup=pythonRaiseFromStatement display contained
 syn match OptionalParameters /\i*\ze=\(=\)\@!/ display contained
 "
