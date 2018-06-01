@@ -21,47 +21,15 @@ syn keyword pythonOperator      and in is not or
 syn match pythonStatement       "\s*\([.,]\)\@<!\<yield\>"
 syn keyword pythonInclude       import
 syn keyword pythonImport        import
-syn match pythonIdentifier "\v[a-zA-Z_][a-zA-Z0-9_]*" nextgroup=FunctionParameters
+syn match pythonIdentifier "\v[a-zA-Z_][a-zA-Z0-9_]*"
 syn match pythonRaiseFromStatement      "from\>"
 syn match pythonImport          "^\s*\zsfrom\>"
 syn keyword pythonStatement   as nonlocal
 syn match   pythonStatement   "\v(\.)@<!<await>"
-syn match   pythonFunction    "[a-zA-Z_][a-zA-Z0-9_]*" nextgroup=FunctionParameters display contained
+syn match   pythonFunction    "[a-zA-Z_][a-zA-Z0-9_]*" display contained
 syn match   pythonStatement   "\<async\s\+def\>" nextgroup=pythonFunction skipwhite
 syn match   pythonStatement   "\<async\s\+with\>"
 syn match   pythonStatement   "\<async\s\+for\>"
-
-syn region FunctionParameters start='(' end=')' display contains=
-            \ FunctionParameters,
-            \ OptionalParameters,
-            \ pythonRepeat,
-            \ pythonInstanceVariable,
-            \ pythonClassVaraible,
-            \ pythonConditional,
-            \ pythonComment,
-            \ pythonOperator,
-            \ pythonNumber,
-            \ pythonNumberError,
-            \ pythonFloat,
-            \ pythonHexNumber,
-            \ pythonStatement,
-            \ pythonOctNumber,
-            \ pythonString,
-            \ pythonRawString,
-            \ pythonUniString,
-            \ pythonExClass,
-            \ pythonUniRawString,
-            \ pythonNumber,
-            \ pythonRawString,
-            \ pythonBytes,
-            \ pythonBuiltinObj,
-            \ pythonNone,
-            \ pythonBuiltinFunc,
-            \ pythonBoolean nextgroup=pythonRaiseFromStatement display contained
-syn match OptionalParameters /\i*\ze=\(=\)\@!/ display contained
-"
-" Decorators (new in Python 2.4)
-"
 
 syn match   pythonDecorator	"@" display nextgroup=pythonDottedName skipwhite
 syn match   pythonDottedName "\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\%(\.\%([^[:cntrl:][:space:][:punct:][:digit:]]\|_\)\%([^[:cntrl:][:punct:][:space:]]\|_\)*\)*" display contained nextgroup=FunctionParameters
@@ -79,9 +47,6 @@ syn match pythonError		"[=]\{3,}" display
 syn match pythonIndentError	"^\s*\%( \t\|\t \)\s*\S"me=e-1 display
 syn match pythonSpaceError	"\s\+$" display
 
-"
-" Strings
-"
 
 syn region pythonBytes		start=+[bB]'+ skip=+\\\\\|\\'\|\\$+ excludenl end=+'+ end=+$+ keepend contains=pythonBytesError,pythonBytesContent,@Spell
 syn region pythonBytes		start=+[bB]"+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end=+$+ keepend contains=pythonBytesError,pythonBytesContent,@Spell
@@ -105,30 +70,24 @@ syn match pythonUniEscapeError    "\\U\x\{,7}\X" display contained
 syn match pythonUniEscape         "\\N{[A-Z ]\+}" display contained
 syn match pythonUniEscapeError    "\\N{[^A-Z ]\+}" display contained
 
-syn region pythonString   start=+[uf]\?'+ skip=+\\\\\|\\'\|\\$+ excludenl end=+'+ end=+$+ keepend contains=pythonBytesEscape,pythonBytesEscapeError,pythonUniEscape,pythonUniEscapeError,@Spell
-syn region pythonString   start=+[uf]\?"+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end=+$+ keepend contains=pythonBytesEscape,pythonBytesEscapeError,pythonUniEscape,pythonUniEscapeError,@Spell
-syn region pythonString   start=+[uf]\?"""+ end=+"""+ keepend contains=pythonBytesEscape,pythonBytesEscapeError,pythonUniEscape,pythonUniEscapeError,pythonDocTest2,pythonSpaceError,@Spell
-syn region pythonString   start=+[uf]\?'''+ end=+'''+ keepend contains=pythonBytesEscape,pythonBytesEscapeError,pythonUniEscape,pythonUniEscapeError,pythonDocTest,pythonSpaceError,@Spell
 
-syn match  pythonUniRawEscape       "\([^\\]\(\\\\\)*\)\@<=\\u\x\{4}" display contained
-syn match  pythonUniRawEscapeError  "\([^\\]\(\\\\\)*\)\@<=\\u\x\{,3}\X" display contained
+syn region pythonSingleQuoteString start=+'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol
+syn region pythonDoubleQuoteString start=+"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol
 
-syn region pythonRawString  start=+[rR]'+ skip=+\\\\\|\\'\|\\$+ excludenl end=+'+ end=+$+ keepend contains=pythonRawEscape,@Spell
-syn region pythonRawString  start=+[rR]"+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end=+$+ keepend contains=pythonRawEscape,@Spell
-syn region pythonRawString  start=+[rR]"""+ end=+"""+ keepend contains=pythonDocTest2,pythonSpaceError,@Spell
-syn region pythonRawString  start=+[rR]'''+ end=+'''+ keepend contains=pythonDocTest,pythonSpaceError,@Spell
+syn region pythonFString start=+f'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
+syn region pythonFString start=+f"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
 
-syn region pythonRawBytes  start=+[bB][rR]'+ skip=+\\\\\|\\'\|\\$+ excludenl end=+'+ end=+$+ keepend contains=pythonRawEscape,@Spell
-syn region pythonRawBytes  start=+[bB][rR]"+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end=+$+ keepend contains=pythonRawEscape,@Spell
-syn region pythonRawBytes  start=+[bB][rR]"""+ end=+"""+ keepend contains=pythonDocTest2,pythonSpaceError,@Spell
-syn region pythonRawBytes  start=+[bB][rR]'''+ end=+'''+ keepend contains=pythonDocTest,pythonSpaceError,@Spell
-
-syn match pythonRawEscape +\\['"]+ display transparent contained
+syn region pythonTripleSingleQuoteString start=+'''+ skip=+\\'+ excludenl end=+'''+ end=+$+ keepend contains=pythonEol
+syn region pythonTripleDoubleQuoteString start=+"""+ skip=+\\"+ excludenl end=+"""+ end=+$+ keepend contains=pythonEol
 
 
+syn region pythonFString start=+f'''+ skip=+\\'+ excludenl end=+'''+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
+syn region pythonFString start=+f"""+ skip=+\\"+ excludenl end=+"""+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
 
-syn region pythonDocTest	start="^\s*>>>" end=+'''+he=s-1 end="^\s*$" contained
-syn region pythonDocTest2	start="^\s*>>>" end=+"""+he=s-1 end="^\s*$" contained
+syn match pythonEol "\\n" display contained
+
+syn region pythonSingleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonDoubleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator
+syn region pythonDoubleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonSingleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator
 
 syn match   pythonHexError	"\<0[xX]\x*[g-zG-Z]\x*\>" display
 syn match   pythonOctError	"\<0[oO]\=\o*\D\+\d*\>" display
@@ -154,7 +113,7 @@ syn match   pythonFloat		"\<\d\+\.\d*\%([eE][+-]\=\d\+\)\=[jJ]\=" display
 syn keyword pythonNone        None
 syn keyword pythonBoolean		True False
 syn keyword pythonBuiltinObj	Ellipsis NotImplemented
-syn match pythonBuiltinObj	'\v(\.)@<!<(object|bool|int|float|tuple|str|list|dict|set|frozenset|bytearray|bytes)>' nextgroup=FunctionParameters
+syn match pythonBuiltinObj	'\v(\.)@<!<(object|bool|int|float|tuple|str|list|dict|set|frozenset|bytearray|bytes)>'
 syn keyword pythonBuiltinObj	__debug__ __doc__ __file__ __name__ __package__
 syn keyword pythonBuiltinObj	__loader__ __spec__ __path__ __cached__
 
@@ -209,73 +168,73 @@ syn match pythonExClass   '\v(\.)@<!\zs<(ImportWarning|UnicodeWarning)>' nextgro
 syn sync match pythonSync grouphere NONE "):$"
 syn sync maxlines=200
 
-command -nargs=+ HiLink hi def link <args>
+hi def link pythonStatement        Statement
+hi def link pythonRaiseFromStatement   Statement
+hi def link pythonImport           Include
+hi def link pythonFunction         Function
+hi def link pythonConditional      Conditional
+hi def link pythonRepeat           Repeat
+hi def link pythonException        Exception
+hi def link pythonOperator         Operator
 
-HiLink pythonStatement        Statement
-HiLink pythonRaiseFromStatement   Statement
-HiLink pythonImport           Include
-HiLink pythonFunction         Function
-HiLink pythonConditional      Conditional
-HiLink pythonRepeat           Repeat
-HiLink pythonException        Exception
-HiLink pythonOperator         Operator
+hi def link pythonStarArguments    Keyword
 
-HiLink pythonStarArguments    Keyword
+hi def link pythonDecorator        Define
+hi def link pythonDottedName       Function
+hi def link pythonDot              Normal
 
-HiLink pythonDecorator        Define
-HiLink pythonDottedName       Function
-HiLink pythonDot              Normal
+hi def link pythonComment          Comment
+hi def link pythonCoding           Special
+hi def link pythonRun              Special
+hi def link pythonTodo             Todo
 
-HiLink pythonComment          Comment
-HiLink pythonCoding           Special
-HiLink pythonRun              Special
-HiLink pythonTodo             Todo
+hi def link pythonError            Error
+hi def link pythonIndentError      Error
+hi def link pythonSpaceError       Error
 
-HiLink pythonError            Error
-HiLink pythonIndentError      Error
-HiLink pythonSpaceError       Error
+hi def link pythonRawString        String
 
-HiLink pythonString           String
-HiLink pythonRawString        String
+hi def link pythonUniEscape        Special
+hi def link pythonUniEscapeError   Error
 
-HiLink pythonUniEscape        Special
-HiLink pythonUniEscapeError   Error
+hi def link pythonBytes              String
+hi def link pythonRawBytes           String
+hi def link pythonBytesContent       String
+hi def link pythonBytesError         Error
+hi def link pythonBytesEscape        Special
+hi def link pythonBytesEscapeError   Error
 
-HiLink pythonBytes              String
-HiLink pythonRawBytes           String
-HiLink pythonBytesContent       String
-HiLink pythonBytesError         Error
-HiLink pythonBytesEscape        Special
-HiLink pythonBytesEscapeError   Error
+hi def link pythonStrFormatting    Special
+hi def link pythonStrFormat        Special
+hi def link pythonStrTemplate      Special
+hi def link pythonEol              Special
 
-HiLink pythonStrFormatting    Special
-HiLink pythonStrFormat        Special
-HiLink pythonStrTemplate      Special
+hi def link pythonDocTest          Special
+hi def link pythonDocTest2         Special
 
-HiLink pythonDocTest          Special
-HiLink pythonDocTest2         Special
+hi def link pythonNumber           Number
+hi def link pythonHexNumber        Number
+hi def link pythonOctNumber        Number
+hi def link pythonBinNumber        Number
+hi def link pythonFloat            Float
+hi def link pythonNumberError      Error
+hi def link pythonOctError         Error
+hi def link pythonHexError         Error
+hi def link pythonBinError         Error
 
-HiLink pythonNumber           Number
-HiLink pythonHexNumber        Number
-HiLink pythonOctNumber        Number
-HiLink pythonBinNumber        Number
-HiLink pythonFloat            Float
-HiLink pythonNumberError      Error
-HiLink pythonOctError         Error
-HiLink pythonHexError         Error
-HiLink pythonBinError         Error
+hi def link pythonBoolean          Boolean
+hi def link pythonNone             Constant
 
-HiLink pythonBoolean          Boolean
-HiLink pythonNone             Constant
+hi def link pythonBuiltinObj       Structure
+hi def link pythonBuiltinFunc      Function
 
-HiLink pythonBuiltinObj       Structure
-HiLink pythonBuiltinFunc      Function
+hi def link pythonExClass          Structure
+hi def link pythonInstanceVariable htmlTagN
+hi def link pythonClassVaraible htmlTagN
+hi def link OptionalParameters htmlTagN
 
-HiLink pythonExClass          Structure
-HiLink pythonInstanceVariable htmlTagN
-HiLink pythonClassVaraible htmlTagN
-HiLink OptionalParameters htmlTagN
-
-delcommand HiLink
+hi def link pythonFstring String
+hi def link pythonSingleQuoteString String
+hi def link pythonDoubleQuoteString String
 
 let b:current_syntax = "python"
