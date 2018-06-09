@@ -77,8 +77,8 @@ syn region pythonDoubleQuoteString start=+"+ skip=+\\"+ excludenl end=+"+ end=+$
 syn region pythonFString start=+f'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
 syn region pythonFString start=+f"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
 
-syn region pythonTripleSingleQuoteString start=+'''+ skip=+\\'+ excludenl end=+'''+ end=+$+ keepend contains=pythonEol
-syn region pythonTripleDoubleQuoteString start=+"""+ skip=+\\"+ excludenl end=+"""+ end=+$+ keepend contains=pythonEol
+syn region pythonTripleSingleQuoteString start=+'''+ skip=+\\'+ excludenl end=+'''+ keepend contains=pythonEol
+syn region pythonTripleDoubleQuoteString start=+"""+ skip=+\\"+ excludenl end=+"""+ keepend contains=pythonEol
 
 
 syn region pythonFString start=+f'''+ skip=+\\'+ excludenl end=+'''+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
@@ -236,5 +236,7 @@ hi def link OptionalParameters htmlTagN
 hi def link pythonFstring String
 hi def link pythonSingleQuoteString String
 hi def link pythonDoubleQuoteString String
+hi def link pythonTripleSingleQuoteString String
+hi def link pythonTripleDoubleQuoteString String
 
 let b:current_syntax = "python"
