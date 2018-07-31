@@ -86,8 +86,8 @@ syn region pythonFString start=+f"""+ skip=+\\"+ excludenl end=+"""+ keepend con
 
 syn match pythonEol "\\n" display contained
 
-syn region pythonSingleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonDoubleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator contained
-syn region pythonDoubleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonSingleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator contained
+syn region pythonSingleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonDoubleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator,pythonInstanceVariable,pythonClassVaraible contained
+syn region pythonDoubleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonSingleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator,pythonInstanceVariable,pythonClassVaraible contained
 
 syn match   pythonHexError	"\<0[xX]\x*[g-zG-Z]\x*\>" display
 syn match   pythonOctError	"\<0[oO]\=\o*\D\+\d*\>" display
