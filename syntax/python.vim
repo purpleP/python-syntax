@@ -74,20 +74,20 @@ syn match pythonUniEscapeError    "\\N{[^A-Z ]\+}" display contained
 syn region pythonSingleQuoteString start=+'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol
 syn region pythonDoubleQuoteString start=+"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol
 
-syn region pythonFString start=+f'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
-syn region pythonFString start=+f"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
+syn region pythonSingleQuoteFString start=+f'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
+syn region pythonDoubleQuoteFString start=+f"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
 
 syn region pythonTripleSingleQuoteString start=+'''+ skip=+\\'+ excludenl end=+'''+ keepend contains=pythonEol
 syn region pythonTripleDoubleQuoteString start=+"""+ skip=+\\"+ excludenl end=+"""+ keepend contains=pythonEol
 
 
-syn region pythonFString start=+f'''+ skip=+\\'+ excludenl end=+'''+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
-syn region pythonFString start=+f"""+ skip=+\\"+ excludenl end=+"""+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
+syn region pythonTripleSingleQuoteFString start=+f'''+ skip=+\\'+ excludenl end=+'''+ contains=pythonEol,pythonSingleQuoteFStringFormat
+syn region pythonTripleDoubleQuoteFString start=+f"""+ skip=+\\"+ excludenl end=+"""+ contains=pythonEol,pythonDoubleQuoteFStringFormat
 
 syn match pythonEol "\\n" display contained
 
-syn region pythonSingleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonDoubleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator,pythonInstanceVariable,pythonClassVaraible contained
-syn region pythonDoubleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ keepend contains=pythonStatement,pythonConditional,pythonBoolean,pythonSingleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator,pythonInstanceVariable,pythonClassVaraible contained
+syn region pythonSingleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ contains=pythonStatement,pythonConditional,pythonBoolean,pythonDoubleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator,pythonInstanceVariable,pythonClassVaraible contained containedin=pythonSingleQuoteFString
+syn region pythonDoubleQuoteFStringFormat matchgroup=Special start=+{+ end=+}+ contains=pythonStatement,pythonConditional,pythonBoolean,pythonSingleQuoteString,pythonRepeat,pythonNumber,pythonFloat,pythonOperator,pythonInstanceVariable,pythonClassVaraible contained containedin=pythonDoubleQuoteFString
 
 syn match   pythonHexError	"\<0[xX]\x*[g-zG-Z]\x*\>" display
 syn match   pythonOctError	"\<0[oO]\=\o*\D\+\d*\>" display
@@ -204,9 +204,6 @@ hi def link pythonBytesError         Error
 hi def link pythonBytesEscape        Special
 hi def link pythonBytesEscapeError   Error
 
-hi def link pythonStrFormatting    Special
-hi def link pythonStrFormat        Special
-hi def link pythonStrTemplate      Special
 hi def link pythonEol              Special
 
 hi def link pythonDocTest          Special
@@ -233,10 +230,13 @@ hi def link pythonInstanceVariable htmlTagN
 hi def link pythonClassVaraible htmlTagN
 hi def link OptionalParameters htmlTagN
 
-hi def link pythonFstring String
+hi def link pythonSingleQuoteFString String
+hi def link pythonDoubleQuoteFString String
 hi def link pythonSingleQuoteString String
 hi def link pythonDoubleQuoteString String
 hi def link pythonTripleSingleQuoteString String
 hi def link pythonTripleDoubleQuoteString String
+hi def link pythonTripleSingleQuoteFString String
+hi def link pythonTripleDoubleQuoteFString String
 
 let b:current_syntax = "python"
