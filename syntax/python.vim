@@ -74,8 +74,8 @@ syn match pythonUniEscapeError    "\\N{[^A-Z ]\+}" display contained
 syn region pythonSingleQuoteString start=+'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol
 syn region pythonDoubleQuoteString start=+"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol
 
-syn region pythonSingleQuoteFString start=+f'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
-syn region pythonDoubleQuoteFString start=+f"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
+syn region pythonSingleQuoteFString start=+fr\?'+ skip=+\\'+ excludenl end=+'+ end=+$+ keepend contains=pythonEol,pythonSingleQuoteFStringFormat
+syn region pythonDoubleQuoteFString start=+fr\?"+ skip=+\\"+ excludenl end=+"+ end=+$+ keepend contains=pythonEol,pythonDoubleQuoteFStringFormat
 
 syn region pythonTripleSingleQuoteString start=+'''+ skip=+\\'+ excludenl end=+'''+ keepend contains=pythonEol
 syn region pythonTripleDoubleQuoteString start=+"""+ skip=+\\"+ excludenl end=+"""+ keepend contains=pythonEol
